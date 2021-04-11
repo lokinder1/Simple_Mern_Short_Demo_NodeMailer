@@ -1,30 +1,25 @@
-import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-
 import TextField from "@material-ui/core/TextField";
+import axios from "axios";
+import React, { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const useStyles = makeStyles(() => ({
   root: {
     padding: " 50px !important",
     display: "flex",
-    justifyContent: "center"
-
+    justifyContent: "center",
   },
   button: {
     margin: " 8px !important",
-  },
-  status: {
-    margin: " 8px !important",
-    color: "#8f3547ee"
   },
 }));
 
 export default function MailSend() {
   const classes = useStyles();
   const [mailTo, setMailTo] = useState("");
-  const [mailStatus, setMailStatus] = useState("");
 
   function handleOnClick(e) {
     e.preventDefault();
@@ -33,11 +28,11 @@ export default function MailSend() {
       .then((res) => {
         console.log(res.data);
         if (res.status === 200) {
-          console.log("sucess");
-          setMailStatus(res.data);
+          console.log("success");
+          toast.success(res.data);
         } else {
           console.log("failed");
-          setMailStatus(res.data);
+          toast.error(res.data);
         }
       })
       .catch((err) => {
@@ -46,6 +41,7 @@ export default function MailSend() {
   }
   return (
     <div className={classes.root}>
+      <ToastContainer />
       <TextField
         id="outlined-basic"
         label="Emails"
@@ -65,8 +61,6 @@ export default function MailSend() {
       >
         Send Mail
       </Button>
-
-      <div className={classes.status}>{mailStatus}</div>
     </div>
   );
 }
